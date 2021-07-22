@@ -31,8 +31,8 @@ int height(binary_tree_t *tree)
  */
 void current_level(const binary_tree_t *tree, void (*func)(int), int level)
 {
-        if (!tree || !func)
-                return;
+	if (!tree || !func)
+		return;
 
 	if (level == 1)
 		func(tree->n);
