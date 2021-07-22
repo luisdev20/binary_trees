@@ -53,6 +53,7 @@ avl_t *avl_recu(avl_t **tree, int value)
 	{
 		if ((*tree)->right == NULL)
 		{
+			printf("here");
 			(*tree)->right = binary_tree_node(*tree, value);
 			return ((*tree)->right);
 		}
@@ -61,9 +62,11 @@ avl_t *avl_recu(avl_t **tree, int value)
 			new_node = avl_recu(&((*tree)->right), value);
 			if (new_node)
 			{
+				printf("here");
 				balancer(tree, value);
-				return (new_node);
+
 			}
+			return (new_node);
 		}
 	}
 	return (NULL);
