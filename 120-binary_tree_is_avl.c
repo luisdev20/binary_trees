@@ -1,25 +1,5 @@
 #include "binary_trees.h"
-#include "limits.h"
 
-/**
- * is_bst_helper - Checks if a binary tree is a valid binary search tree.
- * @tree: A pointer to the root node of the tree to check.
- * @lo: The value of the smallest node visited thus far.
- * @hi: The value of the largest node visited this far.
- *
- * Return: If the tree is a valid BST, 1, otherwise, 0.
- */
-int is_bst_helper(const binary_tree_t *tree, int lo, int hi)
-{
-	if (tree != NULL)
-	{
-		if (tree->n < lo || tree->n > hi)
-			return (0);
-		return (is_bst_helper(tree->left, lo, tree->n - 1) &&
-				is_bst_helper(tree->right, tree->n + 1, hi));
-	}
-	return (1);
-}
 /**
  * binary_tree_is_avl - insert a new node in a Binary Search Tree
  * @tree: arrya to use
@@ -49,16 +29,77 @@ int binary_tree_is_avl(const binary_tree_t *tree)
 }
 
 /**
- * binary_tree_is_bst - Checks if a binary tree is a valid binary search tree.
- * @tree: A pointer to the root node of the tree to check.
+ * binary_tree_is_bst - finds the lowest common ancestor of two nodes
+ * @tree: a pointer to the first node
  *
- * Return: 1 if tree is a valid BST, and 0 otherwise
+ * Return: If no common ancestor was found return NULL
  */
 int binary_tree_is_bst(const binary_tree_t *tree)
 {
 	if (tree == NULL)
+	{
 		return (0);
-	return (is_bst_helper(tree, INT_MIN, INT_MAX));
+	}
+	if (less(tree->left, tree->n) && greater(tree->right, tree->n))
+	{
+		if (!tree->left || binary_tree_is_bst(tree->left))
+		{
+			if (!tree->right || binary_tree_is_bst(tree->right))
+			{
+				return (1);
+			}
+		}
+	}
+	return (0);
+}
+
+/**
+ * less - verify is node value is less root value
+ * @tree: a pointer to the first node
+ * @n: root value
+ * Return: return 1 if are right or 0 if failes
+ */
+int less(const binary_tree_t *tree, int n)
+{
+	int left, right;
+
+	if (tree == NULL)
+		return (1);
+	if (tree->n < n)
+	{
+		left = less(tree->left, n);
+		right = less(tree->right, n);
+		if (left != 0 && right != 0)
+		{
+			return (1);
+		}
+	}
+	return (0);
+}
+
+/**
+ * greater - verify is node value is greater root value
+ * @tree: a pointer to the first node
+ * @n: root value
+ * Return: return 1 if are right or 0 if failes
+ */
+int greater(const binary_tree_t *tree, int n)
+{
+	int left, right;
+
+	if (tree == NULL)
+		return (1);
+
+	if (tree->n > n)
+	{
+		left = greater(tree->left, n);
+		right = greater(tree->right, n);
+		if (left != 0 && right != 0)
+		{
+			return (1);
+		}
+	}
+	return (0);
 }
 
 /**
