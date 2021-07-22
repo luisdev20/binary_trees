@@ -9,9 +9,11 @@
 int binary_tree_is_bst(const binary_tree_t *tree)
 {
 	if (tree == NULL)
+	{
 		return (0);
-
-	if (less(tree->left, tree->n) && greater(tree->right, tree->n))
+	}
+	if (check_less_greater(tree->left, tree->n, 1) &&
+		check_less_greater(tree->right, tree->n, 2))
 	{
 		if (!tree->left || binary_tree_is_bst(tree->left))
 		{
@@ -25,49 +27,40 @@ int binary_tree_is_bst(const binary_tree_t *tree)
 }
 
 /**
- * less - verify is node value is less root value
+ * check_less_greater - verify if node is (less or greater) than root value
  * @tree: a pointer to the first node
  * @n: root value
+ * @flag: switch to active lees or greater mode
  * Return: return 1 if are right or 0 if failes
  */
-int less(const binary_tree_t *tree, int n)
+int check_less_greater(const binary_tree_t *tree, int n, int flag)
 {
 	int left, right;
 
 	if (tree == NULL)
 		return (1);
-	if (tree->n < n)
+	if (flag == 1)
 	{
-		left = less(tree->left, n);
-		right = less(tree->right, n);
-		if (left != 0 && right != 0)
+		if (tree->n < n)
 		{
-			return (1);
+			left = check_less_greater(tree->left, n, flag);
+			right = check_less_greater(tree->right, n, flag);
+			if (left != 0 && right != 0)
+			{
+				return (1);
+			}
 		}
 	}
-	return (0);
-}
-
-/**
- * greater - verify is node value is greater root value
- * @tree: a pointer to the first node
- * @n: root value
- * Return: return 1 if are right or 0 if failes
- */
-int greater(const binary_tree_t *tree, int n)
-{
-	int left, right;
-
-	if (tree == NULL)
-		return (1);
-
-	if (tree->n > n)
+	if (flag == 2)
 	{
-		left = greater(tree->left, n);
-		right = greater(tree->right, n);
-		if (left != 0 && right != 0)
+		if (tree->n > n)
 		{
-			return (1);
+			left = check_less_greater(tree->left, n, flag);
+			right = check_less_greater(tree->right, n, flag);
+			if (left != 0 && right != 0)
+			{
+				return (1);
+			}
 		}
 	}
 	return (0);
