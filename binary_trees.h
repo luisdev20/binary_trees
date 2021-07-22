@@ -70,6 +70,6 @@ int greater(const binary_tree_t *tree, int n);
 int less(const binary_tree_t *tree, int n);
 bst_t *bst_insert(bst_t **tree, int value);
 bst_t *array_to_bst(int *array, size_t size);
-
+bst_t *bst_search(const bst_t *tree, int value);
 
 #endif /* _BINARY_TREES_H_ */
